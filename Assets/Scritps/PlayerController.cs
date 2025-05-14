@@ -10,12 +10,14 @@ public class PlayerController : MonoBehaviour
     private float xRotation = 0f;
 
     [Header("Cámara")]
-    public Transform playerCamera; // Asigna la cámara en el Inspector
+    public Transform playerCamera; 
 
     [Header("Interacción")]
     public GameObject pressEText;
     private GameObject currentInteractable;
-
+    [Header("Gravedad")]
+    public float gravity = -9.81f;
+    private float velocityY = 0f;
     void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -35,6 +37,7 @@ public class PlayerController : MonoBehaviour
         Movimiento();
         RotacionCamara();
         Interaccion();
+        AplicarGravedad();
     }
 
     void Movimiento()
@@ -42,7 +45,7 @@ public class PlayerController : MonoBehaviour
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
-        // Movimiento relativo a la dirección a la que mira el jugador
+  
         Vector3 moveDirection = transform.forward * vertical + transform.right * horizontal;
         characterController.Move(moveDirection * moveSpeed * Time.deltaTime);
     }
@@ -52,14 +55,14 @@ public class PlayerController : MonoBehaviour
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
-        // Rotación vertical (arriba/abajo) - solo afecta a la cámara
+        
         xRotation -= mouseY;
-        xRotation = Mathf.Clamp(xRotation, -90f, 90f); // Limita para no voltear completamente
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        // Aplica rotación vertical a la cámara
+        
         playerCamera.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
 
-        // Rotación horizontal (izquierda/derecha) - afecta al jugador completo
+     
         transform.Rotate(Vector3.up * mouseX);
     }
 
@@ -79,7 +82,19 @@ public class PlayerController : MonoBehaviour
             if (pressEText != null) pressEText.SetActive(true);
         }
     }
+    void AplicarGravedad()
+    {
+        if (!characterController.isGrounded)
+        {
+            velocityY += gravity * Time.deltaTime;
+        }
+        else
+        {
+            velocityY = 0;
+        }
 
+        characterController.Move(Vector3.up * velocityY * Time.deltaTime);
+    }
     void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Entidad"))
