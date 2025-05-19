@@ -78,8 +78,8 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 moveDirection = (transform.right * movement.x + transform.forward * movement.y).normalized;
         Vector3 velocity = moveDirection * walkSpeed;
-        velocity.y = myRBD.velocity.y;
-        myRBD.velocity = velocity;
+        velocity.y = myRBD.linearVelocity.y;
+        myRBD.linearVelocity = velocity;
     }
     private void OnInteract()
     {

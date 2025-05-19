@@ -6,9 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/ProjectAssets/Scenes/SampleScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
     path: Assets/Scenes/Minigame_Knife.unity
     guid: 7c873b79d46a7544eaf32ae7ba1f018d
   m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0
